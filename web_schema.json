@@ -1,0 +1,167 @@
+{
+    "$id": "http://trial.com/p0",
+    "title": "A sample schema",
+    "definitions": {
+        "hex-color-code": {
+            "type": "string",
+            "description": "Hex code. e.g. '#b5383c' - translates to Red=0xb5=181, Green=0x38=56 & Blue=0x3c=60",
+            "maxLength": 7,
+            "minLength": 7
+        },
+        "color-codes": {
+            "type": "array",
+            "description": "color names to code mapping",
+            "items": {
+                "type": "object",
+                "description": "Asserting name to hex color code as string. 'brown'='#b5383c'",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "color-name attr value. e.g. red, brown, green, light-green, ... "
+                    },
+                    "hex-code": { "$ref": "#/definitions/hex-color-code" }
+                },
+				"required": [ "name", "hex-code" ]
+            },
+            "minItems": 1,
+            "uniqueItems": true,
+            "maxItems": 999
+        },
+        "embedded-image": {
+            "type": "object",
+            "description": "The image is embedded as text encoded or a URI to an image",
+            "properties": {
+                "image-encoded": {
+                    "type": "string",
+                    "description": "Text encoding of the image binary"
+                },
+                "image-format": {
+                    "type": "string",
+                    "description": "format of the underlying raw binary. e.g. 'jpeg', 'img', 'png', ..."
+                }
+            },
+            "required": [ "image-encoded", "image-format" ]
+        },
+        "text-display-definition": {
+            "type": "object",
+            "description": "provides text and display formatters",
+            "properties": {
+                "text": {
+                    "type": "string"
+                },
+                "color-hex-code": { "$ref": "#/definitions/hex-color-code" },
+                "color-name": { 
+                    "type": "string",
+                    "description": "Name of the color. To make unambiguous interpretation of the color, provide color name to code mappings in general-settings, using definitions/color-codes schema"
+                },
+                "link": {
+                    "type": "string",
+                    "description": "Link to call for an action, when user clicks on this text"
+                },
+                "font-size": {
+                    "type": "number",
+                    "description": "Size of font",
+                    "minimum": 8,
+                    "maximum": 72
+                },
+                "icon": {
+                    "type": "object",
+                    "description": "Icon image for this text item. The image is either embedded as text encoded or a URI to an image",
+                    "oneOf": [
+                        {
+                            "properties": {
+                                "image-embedded": { "$ref": "#/definitions/embedded-image" }
+                            },
+                            "required": [ "image-embedded" ]
+                        },
+                        {
+                            "properties": {
+                                "image-uri": {
+                                    "type": "string",
+                                    "description": "URI of the image"
+                                }
+                            },
+                            "required": [ "image-uri" ]
+                        }
+                    ]
+                }
+            },
+			"required": ["text"]
+        },
+        "page-header" : {
+            "type": "object",
+            "description": "header of the page",
+            "properties": {
+                "center": {"$ref": "#/definitions/text-display-definition" },
+                "left": {"$ref": "#/definitions/text-display-definition" },
+                "right": {"$ref": "#/definitions/text-display-definition" }
+            }
+        },
+        "page-footer": {
+            "type": "object",
+            "description": "footer of the page",
+            "properties": {
+                "center": {"$ref": "#/definitions/text-display-definition" },
+                "left": {"$ref": "#/definitions/text-display-definition" },
+                "right": {"$ref": "#/definitions/text-display-definition" }
+            }
+        },
+        "list-display-format": {
+            "enum": [
+                "none",
+                "bulleted",
+                "numbered",
+                "icon"
+            ]
+        },
+        "list": {
+            "type": "object",
+            "description": "List of entries",
+            "properties": {
+                "members": {
+                    "type": "array",
+                    "description": "Values/members of the list",
+                    "items": {
+                        "type": "object",
+                        "description": "Definition of member, as data and help data for each",
+                        "properties": {
+                            "member": { "$ref": "#/definitions/text-display-definition" },
+                            "help-data": {
+                                "type": "string",
+                                "description": "Additional help doc, when user hover around or right-click."
+                            }
+                        },
+                        "required": [ "member" ]
+                    }
+                },
+                "display-format": { "$ref": "#/definitions/list-display-format" }
+            },
+            "required": [ "members" ]
+        }
+    },
+    "type": "object",
+    "properties": {
+
+        "readme": {
+            "type": "string",
+            "description": "An attempt to describe a web pages from a JSON doc. This schema defines data types that carry properties on how that data type if provided, reflect in web page. The json instance may use this attribute to explain that page."
+        },
+        "settings": {
+            "type": "object",
+            "description": "General settings that is applicable to entire page",
+            "properties": {
+                "color-codes": { "$ref": "#/definitions/color-codes" }
+            }
+        },
+        "contents": {
+            "type": "object",
+            "description": "Data content for the page",
+            "properties": {
+                "header": { "$ref": "#/definitions/page-header" },
+                "list": { "$ref": "#/definitions/list" },
+                "footer": { "$ref": "#/definitions/page-footer" }
+            }
+        }
+    }
+}
+

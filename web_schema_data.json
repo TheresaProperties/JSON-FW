@@ -1,0 +1,38 @@
+{
+    "readme": "hello world! Test only !!",
+    "settings": {
+        "color-codes": [
+            { "name": "blue", "hex-code": "#80D2F3" },
+            { "name": "xlue", "hex-code": "#80D2F3" },
+            { "name": "purple", "hex-code": "#ED65ED" }
+        ]
+    },
+    "contents": {
+        "header": {
+            "center": {
+                "text": "Sample data",
+                "color-hex-code": "#b5383c",
+                "link": "https://my.site.com/test",
+                "font-size": 10
+            }
+        },
+        "list": {
+            "members": [
+                {
+                    "member" : {
+                        "text": "apple",
+                        "font-size": 10,
+                        "icon": {
+                            "image-embedded": {
+                                "image-encoded": "This is encoded image",
+                                "image-format": "jpeg"
+                            }
+                        }
+                    },
+                    "help-data": "Apple a day..."
+                }
+            ]
+        }
+    }
+}
+
