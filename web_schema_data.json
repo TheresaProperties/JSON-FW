@@ -10,22 +10,47 @@
     "contents": {
         "header": {
             "center": {
-                "text": "Sample data",
-                "color-hex-code": "#b5383c",
-                "link": "https://my.site.com/test",
-                "font-size": 10
+                "text": {
+                    "text": "Sample data",
+                    "color-hex-code": "#b5383c",
+                    "link": {
+                        "url": "https://my.site.com/test",
+                        "click-disabled": false
+                    },
+                    "font-size": 10
+                }
+            },
+            "test": {
+                "text": "11"
             }
+        },
+        "body": {
+            "data": [
+                {
+                    "text": "line 1"
+                },
+                {
+                    "text": "line 2",
+                    "link": {
+                        "url": "https://abc.com",
+                        "click-disabled": false
+                    },
+                    "color-hex-code": "eeeeeee"
+                }
+            ]
         },
         "list": {
             "members": [
                 {
                     "member" : {
-                        "text": "apple",
-                        "font-size": 10,
-                        "icon": {
-                            "image-embedded": {
-                                "image-encoded": "This is encoded image",
-                                "image-format": "jpeg"
+                        "text": {
+                            "text": "apple",
+                            "font-size": 10,
+                            "icon": {
+                                "image-embedded": {
+                                    "image-encoded": "This is encoded image",
+                                    "image-format": "jpeg"
+                                }
                             }
                         }
                     },

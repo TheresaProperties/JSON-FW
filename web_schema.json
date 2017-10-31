@@ -21,11 +21,34 @@
                     },
                     "hex-code": { "$ref": "#/definitions/hex-color-code" }
                 },
-				"required": [ "name", "hex-code" ]
+                "required": [ "name", "hex-code" ]
             },
             "minItems": 1,
             "uniqueItems": true,
             "maxItems": 999
+        },
+        "relative-value": {
+            "type": "object",
+            "description": "Position relative within max; scale it up/down as needed.",
+            "properties": {
+                "val": {
+                    "type": "integer",
+                    "description": "val relative to max"
+                },
+                "max": {
+                    "type": "integer",
+                    "description": "Max value for relative calculation"
+                },
+                "required": [ "index", "max" ]
+            }
+        },
+        "screen-position": {
+            "x-pos": { "$ref": "#/definitions/relative-value" },
+            "y-pos": { "$ref": "#/definitions/relative-value" }
+        },
+        "screen-size": {
+            "width": { "$ref": "#/definitions/relative-value" },
+            "height": { "$ref": "#/definitions/relative-value" }
         },
         "embedded-image": {
             "type": "object",
@@ -42,7 +65,20 @@
             },
             "required": [ "image-encoded", "image-format" ]
         },
-        "text-display-definition": {
+        "url-link": {
+            "type": "object",
+            "description": "A click will take to the associated URL",
+            "properties": {
+                "url": {
+                    "type": "string"
+                },
+                "click-disabled": {
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "text-chunk": {
             "type": "object",
             "description": "provides text and display formatters",
             "properties": {
@@ -50,20 +86,24 @@
                     "type": "string"
                 },
                 "color-hex-code": { "$ref": "#/definitions/hex-color-code" },
-                "color-name": { 
+                "color-name": {
                     "type": "string",
                     "description": "Name of the color. To make unambiguous interpretation of the color, provide color name to code mappings in general-settings, using definitions/color-codes schema"
                 },
-                "link": {
-                    "type": "string",
-                    "description": "Link to call for an action, when user clicks on this text"
-                },
+                "link": { "$ref": "#/definitions/url-link" },
                 "font-size": {
                     "type": "number",
                     "description": "Size of font",
                     "minimum": 8,
                     "maximum": 72
-                },
+                }
+            }
+        },
+        "text-display-definition": {
+            "type": "object",
+            "description": "provides text and display formatters",
+            "properties": {
+                "text": { "$ref": "#/definitions/text-chunk" },
                 "icon": {
                     "type": "object",
                     "description": "Icon image for this text item. The image is either embedded as text encoded or a URI to an image",
@@ -84,9 +124,26 @@
                             "required": [ "image-uri" ]
                         }
                     ]
-                }
+                },
+                "position": { "$ref": "#/definitions/screen-position" },
+                "size": { "$ref": "#/definitions/screen-size" }
             },
-			"required": ["text"]
+            "required": ["text"]
+        },
+        "text-body": {
+            "type": "object",
+            "description": "header of the page",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "descriptions": "Array of text chunks that make the body",
+                    "items": {
+                        "$ref": "#/definitions/text-chunk"
+                    }
+                },
+                "position": { "$ref": "#/definitions/screen-position" },
+                "size": { "$ref": "#/definitions/screen-size" }
+            }
         },
         "page-header" : {
             "type": "object",
@@ -94,7 +151,8 @@
             "properties": {
                 "center": {"$ref": "#/definitions/text-display-definition" },
                 "left": {"$ref": "#/definitions/text-display-definition" },
-                "right": {"$ref": "#/definitions/text-display-definition" }
+                "right": {"$ref": "#/definitions/text-display-definition" },
+                "test" : {"$ref": "#/definitions/text-chunk" }
             }
         },
         "page-footer": {
@@ -159,6 +217,7 @@
             "properties": {
                 "header": { "$ref": "#/definitions/page-header" },
                 "list": { "$ref": "#/definitions/list" },
+                "body": { "$ref": "#/definitions/text-body" },
                 "footer": { "$ref": "#/definitions/page-footer" }
             }
         }
