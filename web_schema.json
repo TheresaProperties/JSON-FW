@@ -99,6 +99,47 @@
                 }
             }
         },
+        "label": {
+            "type": "object",
+            "description": "provides <key> = <value> (e.g. 'user': 'aaa') for display",
+            "properties": {
+                "key": {
+                    "type" : "string",
+                    "description": "Key of the label"
+                },
+                "value": {  "$ref": "#/definitions/text-chunk" }
+            },
+            "required": [ "value" ]
+        },
+        "text-block": {
+            "type": "array",
+            "description": "provides text and display formatters",
+            "properties": {
+                "items": {
+                    "$ref": "#/definitions/label"
+                }
+            }
+        },
+        "prompt": {
+            "type": "object",
+            "description": "provides <key> = <value> (e.g. 'user': 'aaa') for display",
+            "properties": {
+                "key": {
+                    "type" : "string",
+                    "description": "Key/Field for prompt"
+                },
+                "value": {  "$ref": "#/definitions/text-chunk" },
+                "updatable": {
+                    "type" : "boolean",
+                    "description": "true - allows value to be updated or make it read-only"
+                },
+                "help-text": {
+                    "type" : "string",
+                    "description": "Help text to show user, if needed."
+                }
+            },
+            "required": [ "key", "value" ]
+        },
         "text-display-definition": {
             "type": "object",
             "description": "provides text and display formatters",
@@ -216,6 +257,7 @@
             "description": "Data content for the page",
             "properties": {
                 "header": { "$ref": "#/definitions/page-header" },
+                "status": { "$ref": "#/definitions/text-block" },
                 "list": { "$ref": "#/definitions/list" },
                 "body": { "$ref": "#/definitions/text-body" },
                 "footer": { "$ref": "#/definitions/page-footer" }

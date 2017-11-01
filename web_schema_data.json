@@ -24,6 +24,17 @@
                 "text": "11"
             }
         },
+        "status": [
+            {
+                "key" : "user",
+                "value": {
+                    "text": "Anna",
+                    "link": {
+                        "url": "https://user_data/anna"
+                    }
+                }
+            }
+        ],
         "body": {
             "data": [
                 {
